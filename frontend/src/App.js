@@ -83,7 +83,7 @@ function EditorRoom() {
   const { roomId, userName } = useParams();
   const [code, setCode] = useState('');
   const [users, setUsers] = useState([]);
-  const [polling, setPolling] = useState(true);
+  const [polling] = useState(true);  // Fixed: removed setPolling
 
   useEffect(() => {
     const joinRoom = async () => {
