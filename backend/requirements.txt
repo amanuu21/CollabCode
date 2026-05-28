@@ -1,0 +1,6 @@
+cd C:\Users\Amanuel\Desktop\CollabCode\backend
+echo fastapi > requirements.txt
+echo uvicorn >> requirements.txt
+echo sqlalchemy >> requirements.txt
+echo psycopg2-binary >> requirements.txt
+echo python-dotenv >> requirements.txt
