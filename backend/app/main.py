@@ -13,15 +13,7 @@ app = FastAPI()
 # Updated CORS settings with your specific Vercel URLs
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://collabcode.vercel.app",
-        "https://collab-code.vercel.app",
-        "https://collab-code-git-main-amanuel-s-projects4.vercel.app",
-        "https://collab-code-k4d0uvitt-amanuel-s-projects4.vercel.app",
-        "https://*.vercel.app"
-    ],
+   allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
