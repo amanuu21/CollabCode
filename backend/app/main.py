@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Request
 from sqlalchemy.orm import Session
 from app.database import get_db, engine
 from app.models import Base, Room
 import uuid
-import json
 
 Base.metadata.create_all(bind=engine)
 
@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Store data in memory (for real-time sync)
+# Store data in memory
 room_data = {}
 
 @app.get("/")
@@ -51,7 +51,13 @@ def get_room(room_id: str, db: Session = Depends(get_db)):
     return {"exists": True, "room_id": room.room_id}
 
 @app.post("/api/rooms/{room_id}/join")
-def join_room(room_id: str, user_name: str, db: Session = Depends(get_db)):
+async def join_room(room_id: str, request: Request, db: Session = Depends(get_db)):
+    try:
+        body = await request.json()
+        user_name = body.get("user_name")
+    except:
+        return {"error": "Invalid request"}
+    
     room = db.query(Room).filter(Room.room_id == room_id).first()
     if not room:
         raise HTTPException(status_code=404, detail="Room not found")
@@ -62,7 +68,7 @@ def join_room(room_id: str, user_name: str, db: Session = Depends(get_db)):
             "users": []
         }
     
-    if user_name not in room_data[room_id]["users"]:
+    if user_name and user_name not in room_data[room_id]["users"]:
         room_data[room_id]["users"].append(user_name)
     
     return {
@@ -71,7 +77,14 @@ def join_room(room_id: str, user_name: str, db: Session = Depends(get_db)):
     }
 
 @app.post("/api/rooms/{room_id}/update")
-def update_code(room_id: str, content: str, user_name: str, db: Session = Depends(get_db)):
+async def update_code(room_id: str, request: Request, db: Session = Depends(get_db)):
+    try:
+        body = await request.json()
+        content = body.get("content")
+        user_name = body.get("user_name")
+    except:
+        return {"error": "Invalid request"}
+    
     room = db.query(Room).filter(Room.room_id == room_id).first()
     if not room:
         raise HTTPException(status_code=404, detail="Room not found")
@@ -88,8 +101,14 @@ def update_code(room_id: str, content: str, user_name: str, db: Session = Depend
     return {"success": True, "content": content}
 
 @app.post("/api/rooms/{room_id}/leave")
-def leave_room(room_id: str, user_name: str):
-    if room_id in room_data:
+async def leave_room(room_id: str, request: Request):
+    try:
+        body = await request.json()
+        user_name = body.get("user_name")
+    except:
+        return {"error": "Invalid request"}
+    
+    if room_id in room_data and user_name:
         if user_name in room_data[room_id]["users"]:
             room_data[room_id]["users"].remove(user_name)
     return {"success": True}
