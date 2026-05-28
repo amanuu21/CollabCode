@@ -10,15 +10,17 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Updated CORS settings for Vercel frontend
+# Updated CORS settings with your specific Vercel URLs
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",           # Local React development
-        "http://localhost:5173",           # Vite development
-        "https://collabcode.vercel.app",   # Your production Vercel app
-        "https://collabcode-git-main-amanuu21.vercel.app",  # Vercel preview
-        "https://*.vercel.app"             # All Vercel preview deployments
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://collabcode.vercel.app",
+        "https://collab-code.vercel.app",
+        "https://collab-code-git-main-amanuel-s-projects4.vercel.app",
+        "https://collab-code-k4d0uvitt-amanuel-s-projects4.vercel.app",
+        "https://*.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
