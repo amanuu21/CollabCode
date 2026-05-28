@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
 
-// Production API URLs - Replace with your Render backend URL
-const API_URL = 'https://collabcode-backend.onrender.com';
-const WS_URL = 'wss://collabcode-backend.onrender.com';
+// Hardcoded API URLs - Replace with your actual Render backend URL
+const API_URL = 'https://collabcode-backend-8y1g.onrender.com';
+const WS_URL = 'wss://collabcode-backend-8y1g.onrender.com';
 
 function CreateRoom() {
   const navigate = useNavigate();
@@ -24,7 +24,8 @@ function CreateRoom() {
       const data = await res.json();
       navigate(`/room/${data.room_id}/${userName}`);
     } catch (err) {
-      setError('Failed to create room');
+      console.error('Create room error:', err);
+      setError('Failed to create room. Make sure backend is running.');
     } finally {
       setIsCreating(false);
     }
@@ -49,7 +50,8 @@ function CreateRoom() {
       }
       navigate(`/room/${roomId}/${userName}`);
     } catch (err) {
-      setError('Failed to join room');
+      console.error('Join room error:', err);
+      setError('Failed to join room. Make sure backend is running.');
     }
   };
 
