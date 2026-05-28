@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import Editor from '@monaco-editor/react';
 
+// Production API URLs - Replace with your Render backend URL
+const API_URL = 'https://collabcode-backend.onrender.com';
+const WS_URL = 'wss://collabcode-backend.onrender.com';
+
 function CreateRoom() {
   const navigate = useNavigate();
   const [roomId, setRoomId] = useState('');
@@ -16,7 +20,7 @@ function CreateRoom() {
     }
     setIsCreating(true);
     try {
-      const res = await fetch('http://localhost:8000/api/rooms', { method: 'POST' });
+      const res = await fetch(`${API_URL}/api/rooms`, { method: 'POST' });
       const data = await res.json();
       navigate(`/room/${data.room_id}/${userName}`);
     } catch (err) {
@@ -38,7 +42,7 @@ function CreateRoom() {
     
     setError('');
     try {
-      const res = await fetch(`http://localhost:8000/api/rooms/${roomId}`);
+      const res = await fetch(`${API_URL}/api/rooms/${roomId}`);
       if (res.status === 404) {
         setError('Room not found. Please check the Room ID.');
         return;
@@ -104,7 +108,7 @@ function EditorRoom() {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    const websocket = new WebSocket(`ws://localhost:8000/ws/${roomId}/${userName}`);
+    const websocket = new WebSocket(`${WS_URL}/ws/${roomId}/${userName}`);
     wsRef.current = websocket;
     
     websocket.onopen = () => {
@@ -171,7 +175,6 @@ function EditorRoom() {
     
     setFiles(prev => ({ ...prev, [activeFile]: value }));
     
-    // Debounce sending to avoid too many messages
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -221,7 +224,6 @@ function EditorRoom() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', background: '#1e1e1e' }}>
-      {/* File Explorer Sidebar */}
       <div style={{ width: '250px', background: '#2d2d2d', padding: '20px', color: 'white', borderRight: '1px solid #444', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h3 style={{ margin: 0 }}>Files</h3>
@@ -280,7 +282,6 @@ function EditorRoom() {
         </ul>
       </div>
       
-      {/* Editor Area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {activeFile && files[activeFile] && (
           <>
