@@ -10,9 +10,16 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+# Updated CORS settings for Vercel frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:3000",           # Local React development
+        "http://localhost:5173",           # Vite development
+        "https://collabcode.vercel.app",   # Your production Vercel app
+        "https://collabcode-git-main-amanuu21.vercel.app",  # Vercel preview
+        "https://*.vercel.app"             # All Vercel preview deployments
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -86,14 +93,11 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_name: str,
             
             if message["type"] == "operation":
                 filename = message.get("filename", room_active_file[room_id])
-                # Save the entire content directly
                 room_files[room_id][filename] = message["content"]
                 
-                # Save to database
                 room.files = room_files[room_id]
                 db.commit()
                 
-                # Broadcast to all other users
                 for name, conn in active_connections[room_id].items():
                     if name != user_name:
                         try:
