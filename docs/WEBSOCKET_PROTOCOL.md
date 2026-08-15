@@ -7,3 +7,6 @@
 
 # Progress update on 2026-08-10 - docs: add real-time WebSocket protocol specification (iter 3)
 # Revision: 28
+
+# Progress update on 2026-08-15 - docs: add real-time WebSocket protocol specification (iter 4)
+# Revision: 38
