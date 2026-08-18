@@ -10,3 +10,6 @@
 
 # Progress update on 2026-08-10 - feat(editor): implement operational transformation cursor sync (iter 4)
 # Revision: 31
+
+# Progress update on 2026-08-18 - feat(editor): implement operational transformation cursor sync (iter 5)
+# Revision: 41
