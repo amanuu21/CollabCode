@@ -10,3 +10,6 @@
 
 # Progress update on 2026-08-12 - feat(rooms): add room access tokens with configurable expiration (iter 4)
 # Revision: 33
+
+# Progress update on 2026-08-19 - feat(rooms): add room access tokens with configurable expiration (iter 5)
+# Revision: 43
