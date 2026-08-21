@@ -10,3 +10,6 @@
 
 # Progress update on 2026-08-13 - feat(chat): implement markdown rendering in collaboration sidebar (iter 4)
 # Revision: 35
+
+# Progress update on 2026-08-21 - feat(chat): implement markdown rendering in collaboration sidebar (iter 5)
+# Revision: 45
